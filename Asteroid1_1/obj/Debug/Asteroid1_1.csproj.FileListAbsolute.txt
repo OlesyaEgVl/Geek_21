@@ -1,0 +1,9 @@
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\obj\Debug\Asteroid1_1.csprojAssemblyReference.cache
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\obj\Debug\Asteroid1_1.csproj.CoreCompileInputs.cache
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\bin\Debug\Asteroid1_1.exe.config
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\bin\Debug\Asteroid1_1.exe
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\bin\Debug\Asteroid1_1.pdb
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\obj\Debug\Asteroid1_1.exe
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\obj\Debug\Asteroid1_1.pdb
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\bin\Debug\Images\square.png
+C:\Users\u_m166j\source\repos\Asteroid1_1\Asteroid1_1\bin\Debug\Images\image.jpg
