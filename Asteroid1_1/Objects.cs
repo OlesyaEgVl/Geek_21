@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Asteroid1_1
 {
-    class BaseObject
+    abstract class BaseObject: ICollision
     {
         protected Point pos;
         protected Point dir;
@@ -19,19 +19,17 @@ namespace Asteroid1_1
             this.dir = dir;
             this.size = size;
         }
-        public virtual void Draw()
+
+        public Rectangle Rect => new Rectangle(pos, size);
+
+        public bool Collision(ICollision obj)
         {
-            Game.buffer.Graphics.DrawEllipse(Pens.White, pos.X, pos.Y, size.Width, size.Height);
+            return (obj.Rect.IntersectsWith(this.Rect));
         }
-        public virtual void Update()
-        {
-            pos.X = pos.X + dir.X;
-            pos.Y = pos.Y + dir.Y;
-            if (pos.X < 0) dir.X = -dir.X;
-            if (pos.X < Game.Width) dir.X = -dir.X;
-            if (pos.Y < 0) dir.Y = -dir.Y;
-            if (pos.Y < Game.Height) dir.Y = -dir.Y;
-        }
+
+        abstract public void Draw();
+        abstract public void Update();
+        
     }
     class Star : BaseObject
     {
@@ -40,27 +38,25 @@ namespace Asteroid1_1
         {
             Image = Image;
         }
+        public int Power { get; set; }
         public Star (Point pos,Point dir, Size size):base(pos,dir,size)
         {
-
+            Power = 1;
         }
         public override void Update()
         {
-            pos.X = pos.X + dir.X;
-            if (pos.X < 0) dir.X = Game.Width + 20;
-           /* pos.Y = pos.Y + dir.Y;
-            if (pos.X < 0) dir.X = -dir.X;
-            if (pos.X < Game.Width) dir.X = -dir.X;
-            if (pos.Y < 0) dir.Y = -dir.Y;
-            if (pos.Y < Game.Height) dir.Y = -dir.Y;*/
+            pos.X = pos.X - dir.X;
+            if (pos.X <= 0) pos.X = Game.Width;
+           
         }
         public override void Draw()
         {
-            //Game.buffer.Graphics.DrawLine(Pens.White, pos.X, pos.Y,pos.X +size.Width,pos.Y+ size.Height);
+           
             Game.buffer.Graphics.DrawImage(Image,pos);
         }
 
     }
+    
     class Sky : BaseObject
     {
         private Image img = Image.FromFile("Images\\image.jpg");
@@ -87,5 +83,31 @@ namespace Asteroid1_1
 
             Game.buffer.Graphics.DrawImage(img, pos);
         }
+    }
+    class Bullet : BaseObject
+    {
+        int speed;
+        private Image img = Image.FromFile("Images\\bullet.png");
+
+       
+        public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
+        {
+            speed = dir.X;
+        }
+
+        public override void Draw()
+        {
+            Game.buffer.Graphics.DrawImage(img, pos);
+        }
+
+        public override void Update()
+        {
+            if (pos.X < Game.Width + size.Width) pos.X = pos.X + speed;
+        }
+    }
+    interface ICollision
+    {
+        bool Collision(ICollision obj);
+        Rectangle Rect { get; }
     }
 }

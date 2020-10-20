@@ -15,7 +15,7 @@ namespace Asteroid1_1
             form.Show();
             form.FormClosing += Form_FormClosing;
             Game.Init(form);
-            Application.Run();
+            Application.Run(form);
             form.FormClosing += Form_FormClosing;
 
         }
