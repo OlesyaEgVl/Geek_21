@@ -12,15 +12,14 @@ namespace Asteroid1_1
     {
         static BufferedGraphicsContext context;
         static public BufferedGraphics buffer;
-       // static public BufferedGraphics sky;
-        // Свойства
-        // Ширина и высота игрового поля
         static public int Width { get; set; }
         static public int Height { get; set; }
+        public static Bullet bullet;
         static Game()
         {
         }
         static public BaseObject[] objs;
+        static Random rnd = new Random();
         public static Sky sky;
         static public System.Windows.Forms.Timer timer;
         static public void Init(Form form)
@@ -33,6 +32,7 @@ namespace Asteroid1_1
                                       // Запоминаем размеры формы
             Width = form.Width;
             Height = form.Height;
+            if (Width > 1000 || Height > 1000) throw new ArgumentOutOfRangeException();
             // Связываем буфер в памяти с графическим объектом.
             // для того, чтобы рисовать в буфере
             buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
@@ -41,6 +41,7 @@ namespace Asteroid1_1
              timer.Interval = 100;
              timer.Tick += Timer_Tick;
              timer.Start();
+
         }
         private static void Timer_Tick(object sender, EventArgs e)
         {
@@ -52,11 +53,10 @@ namespace Asteroid1_1
             sky = new Sky(new Point(0, 0), new Point(1, 0), new Size(5, 5));
            // Star.Image = Image.FromFile("Images\\image.jpg");
             objs = new BaseObject[30];
-            for (int i = 0; i < objs.Length / 2; i++)
-                objs[i] = new BaseObject(new Point(600, i * 20), new Point(15 - i, 15 - i), new Size(20, 20));
-            Star.Image = Image.FromFile("Images\\square.png");
-            for (int i = 15; i < objs.Length; i++)
-                objs[i] = new Star(new Point(600, i * 20), new Point(15 - i, 15 - i), new Size(20, 20));
+           Star.Image = Image.FromFile("Images\\square.png");
+            bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(100, 80));
+            for (int i = 0; i < objs.Length; i++)
+                objs[i] = new Star(new Point(rnd.Next(i, 1000), rnd.Next(i,1000)), new Point(2, 0), new Size(5, 5));
         }
         static public void Draw()
         {
@@ -67,12 +67,25 @@ namespace Asteroid1_1
             sky.Draw();
             foreach (BaseObject obj in objs)
                 obj.Draw();
-            
+            bullet.Draw();
             buffer.Render();
         }
         static public void Update()
         {
-            foreach (BaseObject obj in objs) obj.Update();
+            foreach (BaseObject obj in objs)
+                obj.Update();
+            
+            bullet.Update();
+            for (int i = 0; i < objs.Length; i++)
+            {
+                objs[i].Update();
+                if (objs[i].Collision(bullet))
+                {
+                    bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(100, 80));
+                    objs[i] = new Star(new Point(1000, 200), new Point(15 + rnd.Next(1, 10), 30 + rnd.Next(1, 10)), new Size(Star.Image.Width, Star.Image.Height));
+                }
+            }
+
         }
 
     }
